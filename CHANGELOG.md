@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-- HACS installation: the `images/` folder is now included in the release by packaging `dist/` contents into `idf-mobilite.zip`; `hacs.json` updated with `zip_release: true` and `filename: idf-mobilite.zip`
-
 ### Changed
 - `.github/workflows/release.yml`: when publishing a prerelease (tag containing `-`, e.g. `v1.2.0-beta.1`), the `[Unreleased]` section in `CHANGELOG.md` is no longer renamed to the version number, `package.json` is not bumped, and no commit is pushed. The release notes are taken from the `[Unreleased]` section content.
 - `package.json`: updated `license` field from `MIT` to `GPL-3.0-only` to match the actual `LICENSE` file (GNU General Public License v3).
@@ -23,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `tgv-white.png` renamed to `tgv_white.png` to match the naming convention used by all other `_white` variants — the TGV icon was broken in `wall_panel` mode due to this mismatch
+- HACS installation: the `images/` folder is now included in the release by packaging `dist/` contents into `idf-mobilite.zip`; `hacs.json` updated with `zip_release: true` and `filename: idf-mobilite.zip`
 
 ### Documentation
 - Moved README images into a dedicated `images/` folder
