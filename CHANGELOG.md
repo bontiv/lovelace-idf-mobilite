@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- `src/idf-mobilite.js`: les images sont désormais chargées directement depuis l'URL raw GitHub (`https://raw.githubusercontent.com/bontiv/lovelace-idf-mobilite/main/src/images/`) au lieu d'utiliser une URL locale relative au module JS compilé (`new URL('images/', import.meta.url)`). Cela supprime la dépendance aux images embarquées dans le zip de release.
+
 ## [1.2.0] - 2026-07-08
 
 ### Changed

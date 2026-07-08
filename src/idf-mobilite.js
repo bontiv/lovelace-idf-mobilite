@@ -31,7 +31,7 @@ class IDFMobiliteCard extends LitElement {
         if (!this.config || !this.hass) {
             return html``;
         }
-        const imagesUrl = new URL('images/', import.meta.url).href
+        const imagesUrl = 'https://raw.githubusercontent.com/bontiv/lovelace-idf-mobilite/main/src/images/'
         return html`
         <ha-card>
             <div class="${this.getBorderClass()}">
@@ -138,7 +138,7 @@ class IDFMobiliteCard extends LitElement {
         const model = parseRerFromSiri(lineDatas, exclude_lines, exclude_lines_ref, nb_departure, groupDestination, groupDestinationName, max_delay, show_replacement_bus)
         if (!model)
             return
-        const imagesUrl = new URL('images/', import.meta.url).href
+        const imagesUrl = 'https://raw.githubusercontent.com/bontiv/lovelace-idf-mobilite/main/src/images/'
          return html`
             ${renderRER(model, this.config, imagesUrl, second_entity)}
         `;
@@ -152,7 +152,7 @@ class IDFMobiliteCard extends LitElement {
         const model = parseBusFromSiri(lineDatas, exclude_lines, exclude_lines_ref, included_destination, show_only_included)
         if (!model)
             return
-        const imagesUrl = new URL('images/', import.meta.url).href
+        const imagesUrl = 'https://raw.githubusercontent.com/bontiv/lovelace-idf-mobilite/main/src/images/'
         return html`
             ${renderBUS(model, this.config, imagesUrl, second_entity)}
         `;
@@ -173,7 +173,7 @@ class IDFMobiliteCard extends LitElement {
             messagesList.map(id => this.hass.states[id]).filter(Boolean)
         );
 
-        const imagesUrl = new URL('images/', import.meta.url).href;
+        const imagesUrl = 'https://raw.githubusercontent.com/bontiv/lovelace-idf-mobilite/main/src/images/';
         const noScroll = this.config.no_messages_scroll === true;
         const htmlString = renderMessages(model, this.config, imagesUrl, noScroll);
 
