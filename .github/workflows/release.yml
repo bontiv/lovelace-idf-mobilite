@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update version and CHANGELOG for release
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION_NO_V="${VERSION#v}"
+          DATE=$(date -u +%Y-%m-%d)
+          CHANGED=0
+
+          # Update version in package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_VERSION" != "$VERSION_NO_V" ]; then
+            npm version "$VERSION_NO_V" --no-git-tag-version
+            CHANGED=1
+          fi
+
+          # Replace [Unreleased] section in CHANGELOG if present
+          if grep -qi "^## \[Unreleased\]" CHANGELOG.md; then
+            sed -i "s/^## \[Unreleased\]/## [${VERSION_NO_V}] - ${DATE}/" CHANGELOG.md
+            CHANGED=1
+          fi
+
+          # Commit and push if any file was modified
+          if [ "$CHANGED" = "1" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add CHANGELOG.md package.json
+            git commit -m "chore: bump version to ${VERSION_NO_V} and update CHANGELOG"
+            git push origin HEAD:${{ github.event.repository.default_branch }}
+          fi
+
+      - name: Build project
+        run: npm run build
+
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION_NO_V="${VERSION#v}"
+          NOTES=$(awk "/^## \[${VERSION_NO_V}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/idf-mobilite.js
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.notes }}
+          draft: ${{ !contains(github.ref_name, '-') }}
+          prerelease: ${{ contains(github.ref_name, '-') }}
