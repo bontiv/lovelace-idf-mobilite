@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - `tgv-white.png` renamed to `tgv_white.png` to match the naming convention used by all other `_white` variants — the TGV icon was broken in `wall_panel` mode due to this mismatch
-- HACS installation: the `images/` folder is now included in the release by packaging `dist/` contents into `idf-mobilite.zip`; `hacs.json` updated with `zip_release: true` and `filename: idf-mobilite.js` so HACS registers the correct JS resource URL after extracting the zip
+- HACS installation: `idf-mobilite.zip` (containing `idf-mobilite.js` + `images/`) and `idf-mobilite.js` are now both uploaded as release assets; `hacs.json` uses `zip_release: true` with `filename: idf-mobilite.js` so HACS extracts the zip (getting the images) and registers the correct JS resource URL
 
 ### Documentation
 - Moved README images into a dedicated `images/` folder
