@@ -549,7 +549,8 @@ export const IDFMobiliteStyles = css`
 }
 .message-div-fix {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     overflow-x: auto;
     min-height: 20px !important;
     border-radius: 0px 0px 9px 9px;
@@ -567,12 +568,21 @@ export const IDFMobiliteStyles = css`
     white-space: nowrap;
 }
 .message-div-text-fix {
-    display: inline;
-    justify-content: right;
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 .message-block {
     display: inline-block;
+}
+.message-item {
+    display: block;
+    padding: 5px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.message-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 

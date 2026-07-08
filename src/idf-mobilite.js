@@ -174,13 +174,12 @@ class IDFMobiliteCard extends LitElement {
         );
 
         const imagesUrl = new URL('images/', import.meta.url).href;
-        const htmlString = renderMessages(model, this.config, imagesUrl);
+        const noScroll = this.config.no_messages_scroll === true;
+        const htmlString = renderMessages(model, this.config, imagesUrl, noScroll);
 
         if (!htmlString) {
             return html``;
         }
-
-        const noScroll = this.config.no_messages_scroll === true;
 
         // Calcul de la vitesse (optionnel si tu veux le garder)
         const textLength = htmlString.replace(/<[^>]*>/g, "").length;

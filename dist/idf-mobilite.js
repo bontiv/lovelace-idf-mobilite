@@ -830,7 +830,8 @@ const re=2;class ae{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,o,n)
 }
 .message-div-fix {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     overflow-x: auto;
     min-height: 20px !important;
     border-radius: 0px 0px 9px 9px;
@@ -848,12 +849,21 @@ const re=2;class ae{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,o,n)
     white-space: nowrap;
 }
 .message-div-text-fix {
-    display: inline;
-    justify-content: right;
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 .message-block {
     display: inline-block;
+}
+.message-item {
+    display: block;
+    padding: 5px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.message-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 
@@ -887,18 +897,18 @@ const re=2;class ae{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,o,n)
             ${ve(m,this.config,f,b)}
         `}createBUSContent(e,o,n,t,l,r){const a=he(e,o,n,0,l);if(!a)return;const s=new URL("images/",import.meta.url).href;return O`
             ${Ee(a,this.config,s,r)}
-        `}createMessageDisplay(){const e=function(e){const o=(new Date).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}),n=[];for(const o of e){const e=we(o);e&&n.push(e)}return{lastUpdate:o,lines:n}}((Array.isArray(this.config.messages)?this.config.messages:this.config.messages?[this.config.messages]:[]).map(e=>this.hass.states[e]).filter(Boolean)),o=new URL("images/",import.meta.url).href,n=function(e,o,n){if(!e||!e.lines||0===e.lines.length)return"";const t={Information:[],Perturbation:[],Commercial:[]},l=new Set;for(const o of e.lines){if(!o?.line)continue;const e=o.line.messages||[];for(const r of e){const e=Le(Ne(r)),a=Ae(e);l.add(a),Se(t,{...r,cleanedText:e,normalized:a},{type:"line",id:o.line.id,name:o.line.name},n)}}for(const o of e.lines)for(const e of o.stations||[])for(const o of e.messages||[]){const r=Le(Ne(o)),a=Ae(r);l.has(a)||(l.add(a),Se(t,{...o,cleanedText:r,normalized:a},{type:"station",id:e.id,name:e.name},n))}let r="";const a=[...Re(t.Perturbation,o),...Re(t.Information,o),...Re(t.Commercial,o)].map(e=>e.text).join(" • ");return a&&(r+='<span class="message-block">',r+=a,r+="</span>"),r}(e,this.config,o);if(!n)return O``;const t=!0===this.config.no_messages_scroll,l=n.replace(/<[^>]*>/g,"").length,r=Math.max(Math.floor(l/10),5);return O`
-        <div class="message-div${t?"-fix":""}
+        `}createMessageDisplay(){const e=function(e){const o=(new Date).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}),n=[];for(const o of e){const e=we(o);e&&n.push(e)}return{lastUpdate:o,lines:n}}((Array.isArray(this.config.messages)?this.config.messages:this.config.messages?[this.config.messages]:[]).map(e=>this.hass.states[e]).filter(Boolean)),o=new URL("images/",import.meta.url).href,n=!0===this.config.no_messages_scroll,t=function(e,o,n,t=!1){if(!e||!e.lines||0===e.lines.length)return"";const l={Information:[],Perturbation:[],Commercial:[]},r=new Set;for(const o of e.lines){if(!o?.line)continue;const e=o.line.messages||[];for(const t of e){const e=Le(Ne(t)),a=Ae(e);r.add(a),Se(l,{...t,cleanedText:e,normalized:a},{type:"line",id:o.line.id,name:o.line.name},n)}}for(const o of e.lines)for(const e of o.stations||[])for(const o of e.messages||[]){const t=Le(Ne(o)),a=Ae(t);r.has(a)||(r.add(a),Se(l,{...o,cleanedText:t,normalized:a},{type:"station",id:e.id,name:e.name},n))}const a=[...Re(l.Perturbation,o),...Re(l.Information,o),...Re(l.Commercial,o)];if(0===a.length)return"";if(t)return a.map(e=>`<div class="message-item">${e.text}</div>`).join("");{const e=a.map(e=>e.text).join(" • ");return`<span class="message-block">${e}</span>`}}(e,this.config,o,n);if(!t)return O``;const l=t.replace(/<[^>]*>/g,"").length,r=Math.max(Math.floor(l/10),5);return O`
+        <div class="message-div${n?"-fix":""}
                     ${this.config.show_screen?"with-screen":this.config.wall_panel?"footer-nobg":""}">
 
-            ${t?O`
+            ${n?O`
                 <div class="message-div-text-fix">
-                    ${ue(n)}
+                    ${ue(t)}
                 </div>
                 `:O`
                 <div class="message-div-text"
                     style="animation: ScrollMessage ${r}s linear infinite;">
-                    ${ue(n)}
+                    ${ue(t)}
                 </div>
                 `}
         </div>

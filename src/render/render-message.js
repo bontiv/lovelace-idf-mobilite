@@ -1,6 +1,6 @@
 import { idfMobiliteLineRef } from "../referentiel-des-lignes-filtered.js";
 
-export function renderMessages(model, config, imagesUrl) {
+export function renderMessages(model, config, imagesUrl, noScroll = false) {
   if (!model || !model.lines || model.lines.length === 0) return "";
 
   const collected = {
@@ -78,27 +78,26 @@ export function renderMessages(model, config, imagesUrl) {
   // ------------------------------------------------------------
   // 4) Construction HTML final
   // ------------------------------------------------------------
-  let fullHtml = "";
 
-  // On concatène dans l’ordre : Perturbation → Information → Commercial
-    const allMessages = [
+  // On concatène dans l'ordre : Perturbation → Information → Commercial
+  const allMessages = [
     ...filteredPerturbations,
     ...filteredInformation,
     ...filteredCommercial
-    ];
+  ];
 
-    const concatMessage = allMessages
-    .map(m => m.text)
-    .join(" • ");
+  if (allMessages.length === 0) return "";
 
-
-  if (concatMessage) {
-    fullHtml += `<span class="message-block">`;
-    fullHtml += concatMessage;
-    fullHtml += `</span>`;
+  if (noScroll) {
+    // Affichage statique : un <div> par message avec espacement
+    return allMessages
+      .map(m => `<div class="message-item">${m.text}</div>`)
+      .join("");
+  } else {
+    // Affichage défilant : tout concaténé avec •
+    const concatMessage = allMessages.map(m => m.text).join(" • ");
+    return `<span class="message-block">${concatMessage}</span>`;
   }
-
-  return fullHtml;
 }
 
 // ------------------------------------------------------------
