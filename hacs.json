@@ -1,7 +1,7 @@
 {
-  "name": "Lovelace - Île de France Mobilité",
+  "name": "Île de France Mobilité (card by Bontiv)",
   "content_in_root": false,
-  "homeassistant": "2025.5.1",
+  "homeassistant": "2022.11.0",
   "render_readme": true,
   "filename": "idf-mobilite.js"
 }

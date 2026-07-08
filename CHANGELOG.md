@@ -7,10 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- `@rollup/plugin-babel`, `@rollup/plugin-commonjs` and `@rollup/plugin-json` rollup plugins removed from `rollup.config.js` and `package.json`: the source code uses only standard ES modules with no `require()`, no JSON imports, and no Babel-specific syntax, making these plugins unnecessary for the build.
+
+### Changed
+- `hacs.json`: updated minimum required Home Assistant version from `2025.5.1` to `2022.11.0`, which corresponds to the oldest HA release supporting `<ha-input>` (the most restrictive HA component used in the card editor). Lit 2.8.0 is bundled and does not add any additional constraint.
+
+### Added
+- `AGENTS.md` and `.github/copilot-instructions.md` with a rule requiring every code change to be accompanied by a `CHANGELOG.md` update under the `[Unreleased]` section (Keep a Changelog format)
+
+### Fixed
+- `tgv-white.png` renamed to `tgv_white.png` to match the naming convention used by all other `_white` variants — the TGV icon was broken in `wall_panel` mode due to this mismatch
+
 ### Documentation
 - Moved README images into a dedicated `images/` folder
 - Updated README image links to use relative URIs instead of absolute GitHub raw URLs
 - Removed unused images from the repository root (`areacode.png`, `cardeditor_old.png`, `cardeditor_old2.png`, `lineref1.png`, `lineref2.png`, `screenshot3.png`, `stoparea1.png`, `stoparea2.png`)
+- Identified and documented unused images in `src/images/`: `info.png`, `tgv-white.png` (naming bug), `trainsq.png`, `trainsq_white.png`
 
 ## [1.1.1] - 2026-07-08
 
