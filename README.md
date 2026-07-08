@@ -34,12 +34,12 @@ Elle utilise l'API **PRIM** (*Plateforme Régionale d'Information pour la Mobili
 
 ## Captures d'écran
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yyrkoon94/lovelace-idf-mobilite/master/screenshot1.png" width="450">
-  <img src="https://raw.githubusercontent.com/yyrkoon94/lovelace-idf-mobilite/master/screenshot1.png" width="450">
+  <img src="images/screenshot1.png" width="450">
+  <img src="images/screenshot1.png" width="450">
 </p>
 
 <p align="center">
-   <img src="https://raw.githubusercontent.com/yyrkoon94/lovelace-idf-mobilite/master/screenshot2.png" width="450">
+   <img src="images/screenshot2.png" width="450">
 </p>
 
 ---
@@ -80,7 +80,7 @@ Dans votre tableau de bord :
 La carte dispose d'un éditeur graphique complet dans Home Assistant.
 
 <p align="center">
-   <img src="https://raw.githubusercontent.com/yyrkoon94/lovelace-idf-mobilite/master/cardeditor.png" width="700">
+   <img src="images/cardeditor.png" width="700">
 </p>
 
 ---
@@ -158,7 +158,7 @@ Vous pouvez sélectionner **une ou plusieurs entités** contenant `disruptions`.
 - BUS : afficher 3 départs
 - RER : afficher les bus de remplacement
 - Gestion des transports supprimés ou retardés
-<img src="https://raw.githubusercontent.com/yyrkoon94/lovelace-idf-mobilite/master/cancel_and_three.png" width="400">
+<img src="images/cancel_and_three.png" width="400">
 
 ---
 
