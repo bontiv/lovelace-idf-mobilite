@@ -1,11 +1,11 @@
 # Carte Lovelace : Île‑de‑France Mobilité
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=flat-square&logo=HomeAssistantCommunityStore&logoColor=white)](https://github.com/hacs/integration)
-[![release](https://img.shields.io/github/v/release/yyrkoon94/lovelace-idf-mobilite?style=flat-square)](https://github.com/yyrkoon94/lovelace-idf-mobilite/releases)
-[![last_commit](https://img.shields.io/github/last-commit/yyrkoon94/lovelace-idf-mobilite/main?style=flat-square)](https://github.com/yyrkoon94/lovelace-idf-mobilite/commits/main)
-[![issues](https://img.shields.io/github/issues/yyrkoon94/lovelace-idf-mobilite?style=flat-square)](https://github.com/yyrkoon94/lovelace-idf-mobilite/issues)
-[![stars](https://img.shields.io/github/stars/yyrkoon94/lovelace-idf-mobilite?style=flat-square)](https://github.com/yyrkoon94/lovelace-idf-mobilite/stargazers)
-[![license](https://img.shields.io/github/license/yyrkoon94/lovelace-idf-mobilite?style=flat-square)](https://github.com/yyrkoon94/lovelace-idf-mobilite/blob/main/LICENSE)
+[![release](https://img.shields.io/github/v/release/bontiv/lovelace-idf-mobilite?style=flat-square)](https://github.com/bontiv/lovelace-idf-mobilite/releases)
+[![last_commit](https://img.shields.io/github/last-commit/bontiv/lovelace-idf-mobilite/main?style=flat-square)](https://github.com/bontiv/lovelace-idf-mobilite/commits/main)
+[![issues](https://img.shields.io/github/issues/bontiv/lovelace-idf-mobilite?style=flat-square)](https://github.com/bontiv/lovelace-idf-mobilite/issues)
+[![stars](https://img.shields.io/github/stars/bontiv/lovelace-idf-mobilite?style=flat-square)](https://github.com/bontiv/lovelace-idf-mobilite/stargazers)
+[![license](https://img.shields.io/github/license/bontiv/lovelace-idf-mobilite?style=flat-square)](https://github.com/bontiv/lovelace-idf-mobilite/blob/main/LICENSE)
 
 [![companion_badge](https://img.shields.io/badge/Companion%20Integration-IDF%20Mobilité%20Assistant-5A4FCF?style=flat-square&logo=homeassistant&logoColor=white)](https://github.com/yyrkoon94/idf-mobilite-assistant)
 [![prim_api](https://img.shields.io/badge/Made%20for-IDFM%20PRIM%20API-0078D4?style=flat-square)](https://prim.iledefrance-mobilites.fr/)
@@ -13,9 +13,19 @@
 
 ---
 
-## 🆕 Nouveauté : intégration Home Assistant dédiée !
+Ce dépôt reprend une grande partie du travail de [yyrkoon94](https://github.com/yyrkoon94/lovelace-idf-mobilite), mais avec un bon nettoyage, un petit coup de bundle, une meilleure compatibilité avec les dernières version de Home Assistant (testé avec la version 2026).
 
-La carte dispose désormais de son **intégration Home Assistant officielle**, permettant :
+## Installation
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=bontiv&repository=lovelace-idf-mobilite&category=plugin)
+
+Installation par HACS.
+
+---
+
+## 🆕 Intégration Home Assistant dédiée
+
+La carte nécessite **l'intégration Home Assistant IDF Mobilite**, permettant :
 
 - configuration **100% UI** (plus de YAML)
 - recherche d’arrêt intégrée
@@ -56,22 +66,6 @@ Elle utilise l’API **PRIM** (*Plateforme Régionale d’Information pour la Mo
 </p>
 
 ---
-
-## Installation via HACS
-
-1. Ouvrez **HACS → Frontend**
-2. Cliquez sur **“Explorer & télécharger des dépôts”**
-3. Recherchez **“IDF Mobilité”**
-4. Installez la carte
-5. Redémarrez Home Assistant si nécessaire
-
-La ressource est ajoutée automatiquement.
-
----
-
-## Usage (avec l’intégration officielle)
-
-Depuis la sortie de l’intégration **IDF Mobilité Assistant**, il n’est plus nécessaire de créer des capteurs REST manuellement.
 
 ### 1. Installer l’intégration
 → Paramètres → Appareils & Services → Ajouter une intégration → **IDF Mobilité Assistant**
