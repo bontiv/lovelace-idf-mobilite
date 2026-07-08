@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0] - 2026-07-08
 
 ### Changed
 - `.github/workflows/release.yml`: when publishing a prerelease (tag containing `-`, e.g. `v1.2.0-beta.1`), the `[Unreleased]` section in `CHANGELOG.md` is no longer renamed to the version number, `package.json` is not bumped, and no commit is pushed. The release notes are taken from the `[Unreleased]` section content.
