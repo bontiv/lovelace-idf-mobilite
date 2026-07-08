@@ -33,26 +33,32 @@ jobs:
           DATE=$(date -u +%Y-%m-%d)
           CHANGED=0
 
-          # Update version in package.json
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          if [ "$CURRENT_VERSION" != "$VERSION_NO_V" ]; then
-            npm version "$VERSION_NO_V" --no-git-tag-version
-            CHANGED=1
-          fi
+          # Detect if this is a prerelease (tag contains '-', e.g. v1.2.0-beta.1)
+          IS_PRERELEASE=false
+          if echo "$VERSION" | grep -q "\-"; then IS_PRERELEASE=true; fi
 
-          # Replace [Unreleased] section in CHANGELOG if present
-          if grep -qi "^## \[Unreleased\]" CHANGELOG.md; then
-            sed -i "s/^## \[Unreleased\]/## [${VERSION_NO_V}] - ${DATE}/" CHANGELOG.md
-            CHANGED=1
-          fi
+          if [ "$IS_PRERELEASE" = "false" ]; then
+            # Update version in package.json only for stable releases
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            if [ "$CURRENT_VERSION" != "$VERSION_NO_V" ]; then
+              npm version "$VERSION_NO_V" --no-git-tag-version
+              CHANGED=1
+            fi
 
-          # Commit and push if any file was modified
-          if [ "$CHANGED" = "1" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add CHANGELOG.md package.json
-            git commit -m "chore: bump version to ${VERSION_NO_V} and update CHANGELOG"
-            git push origin HEAD:${{ github.event.repository.default_branch }}
+            # Replace [Unreleased] section in CHANGELOG only for stable releases
+            if grep -qi "^## \[Unreleased\]" CHANGELOG.md; then
+              sed -i "s/^## \[Unreleased\]/## [${VERSION_NO_V}] - ${DATE}/" CHANGELOG.md
+              CHANGED=1
+            fi
+
+            # Commit and push if any file was modified
+            if [ "$CHANGED" = "1" ]; then
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git add CHANGELOG.md package.json
+              git commit -m "chore: bump version to ${VERSION_NO_V} and update CHANGELOG"
+              git push origin HEAD:${{ github.event.repository.default_branch }}
+            fi
           fi
 
       - name: Build project
@@ -63,7 +69,17 @@ jobs:
         run: |
           VERSION="${{ github.ref_name }}"
           VERSION_NO_V="${VERSION#v}"
-          NOTES=$(awk "/^## \[${VERSION_NO_V}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+
+          # For prereleases, use the [Unreleased] section as release notes
+          IS_PRERELEASE=false
+          if echo "$VERSION" | grep -q "\-"; then IS_PRERELEASE=true; fi
+
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            NOTES=$(awk "/^## \[Unreleased\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          else
+            NOTES=$(awk "/^## \[${VERSION_NO_V}\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          fi
+
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
