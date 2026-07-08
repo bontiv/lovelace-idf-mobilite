@@ -84,11 +84,17 @@ jobs:
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Package release zip
+        run: |
+          cd dist
+          zip -r ../idf-mobilite.zip idf-mobilite.js images/
+          cd ..
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/idf-mobilite.js
+          files: idf-mobilite.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref_name }}
           body: ${{ steps.changelog.outputs.notes }}
