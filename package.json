@@ -14,7 +14,7 @@
   "module": "idf-mobilite.js",
   "repository": "git@github.com/bontiv/lovelace-idf-mobilite.git",
   "author": "Bontiv <prog.bontiv@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "lit": "^2.8.0"
   },

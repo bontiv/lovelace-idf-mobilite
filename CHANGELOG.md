@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `@rollup/plugin-babel`, `@rollup/plugin-commonjs` and `@rollup/plugin-json` rollup plugins removed from `rollup.config.js` and `package.json`: the source code uses only standard ES modules with no `require()`, no JSON imports, and no Babel-specific syntax, making these plugins unnecessary for the build.
 
 ### Changed
+- `package.json`: updated `license` field from `MIT` to `GPL-3.0-only` to match the actual `LICENSE` file (GNU General Public License v3).
 - `hacs.json`: updated minimum required Home Assistant version from `2025.5.1` to `2022.11.0`, which corresponds to the oldest HA release supporting `<ha-input>` (the most restrictive HA component used in the card editor). Lit 2.8.0 is bundled and does not add any additional constraint.
 
 ### Added
