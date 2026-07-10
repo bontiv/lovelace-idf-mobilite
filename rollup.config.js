@@ -1,7 +1,7 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import serve from 'rollup-plugin-serve';
-import copy from "rollup-plugin-copy-assets";
+import url from '@rollup/plugin-url';
 
 const dev = process.env.ROLLUP_WATCH;
 
@@ -16,16 +16,15 @@ const serveopts = {
 };
 
 const plugins = [
+  url({
+    include: ['**/*.png', '**/*.svg'],
+    limit: Infinity, // Always inline as base64 data URI
+  }),
   nodeResolve({
     browser: true,
   }),
   dev && serve(serveopts),
   !dev && terser(),
-  copy({
-    assets: [
-        'src/images',
-    ]
-  })
 ];
 
 export default [

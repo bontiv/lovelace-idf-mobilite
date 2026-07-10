@@ -1,17 +1,17 @@
 // render-rer.js
 import { html } from "lit";
 
-export function renderRER(model, config, imagesUrl, second_entity = false) {
+export function renderRER(model, config, images, second_entity = false) {
   return html`
-    ${renderRerHeader(model, config, imagesUrl, second_entity)}
-    ${renderRerContent(model, config, imagesUrl, second_entity)}
+    ${renderRerHeader(model, config, images, second_entity)}
+    ${renderRerContent(model, config, images, second_entity)}
   `;
 }
 
 /* -------------------------------------------------------------
    HEADER
 ------------------------------------------------------------- */
-function renderRerHeader(model, config, imagesUrl, second_entity) {
+function renderRerHeader(model, config, images, second_entity) {
   const stationName = model.station || "";
   const lastUpdateTime = model.lastUpdate || "";
 
@@ -22,7 +22,7 @@ function renderRerHeader(model, config, imagesUrl, second_entity) {
          style="${second_entity ? "border-radius:0!important" : ""}">
 
       <div class="rer-station-name${config.wall_panel ? "-nobg" : ""}">
-        ${renderStationName(stationName, imagesUrl, config)}
+        ${renderStationName(stationName, images, config)}
       </div>
 
       ${!second_entity ? html`
@@ -43,7 +43,7 @@ function headerClass(config) {
   return "";
 }
 
-function renderStationName(stationName, imagesUrl, config) {
+function renderStationName(stationName, images, config) {
   const hasIcon =
     stationName.includes("RER") ||
     stationName.includes("Métro") ||
@@ -63,19 +63,19 @@ function renderStationName(stationName, imagesUrl, config) {
 
     ${stationName.includes("Métro")
       ? html`<div class="destination-img">
-          <img src="${imagesUrl}metro_white.png" class="destination-image">
+          <img src="${images['metro_white.png']}" class="destination-image">
         </div>`
       : ""}
 
     ${stationName.includes("RER")
       ? html`<div class="destination-img">
-          <img src="${imagesUrl}rer_white.png" class="destination-image">
+          <img src="${images['rer_white.png']}" class="destination-image">
         </div>`
       : ""}
 
     ${stationName.includes("Tramway")
       ? html`<div class="destination-img">
-            <img src="${imagesUrl}tram_white.png" class="destination-image">
+            <img src="${images['tram_white.png']}" class="destination-image">
         </div>`
       : ""}
   `;
@@ -84,7 +84,7 @@ function renderStationName(stationName, imagesUrl, config) {
 /* -------------------------------------------------------------
    CONTENT
 ------------------------------------------------------------- */
-function renderRerContent(model, config, imagesUrl, second_entity) {
+function renderRerContent(model, config, images, second_entity) {
   const lines = model.lines || [];
 
   return html`
@@ -92,7 +92,7 @@ function renderRerContent(model, config, imagesUrl, second_entity) {
       ${lines
         .slice()
         .sort((a, b) => a.id.localeCompare(b.id))
-        .map((line) => renderRerLine(line, config, imagesUrl, second_entity))}
+        .map((line) => renderRerLine(line, config, images, second_entity))}
     </div>
   `;
 }
@@ -100,25 +100,25 @@ function renderRerContent(model, config, imagesUrl, second_entity) {
 /* -------------------------------------------------------------
    LINE BLOCK
 ------------------------------------------------------------- */
-function renderRerLine(line, config, imagesUrl, second_entity) {
+function renderRerLine(line, config, images, second_entity) {
   return html`
     ${line.destinations
       .slice()
       .sort((a, b) => a.name.localeCompare(b.name))
-      .map((dest) => renderRerLineBlock(line, dest, config, imagesUrl, second_entity))}
+      .map((dest) => renderRerLineBlock(line, dest, config, images, second_entity))}
   `;
 }
 
-function renderRerLineBlock(line, dest, config, imagesUrl, second_entity) {
+function renderRerLineBlock(line, dest, config, images, second_entity) {
   let lineCount = -1;
 
   return html`
     <div class="rer-line${config.wall_panel ? "-nobg" : ""}">
-      ${renderRerLineTitle(line, dest.name, config, imagesUrl)}
+      ${renderRerLineTitle(line, dest.name, config, images)}
 
       ${dest.departures.map((dep) => {
         lineCount++;
-        return renderRerLineDetail(line, dest, dep, lineCount, config, imagesUrl, second_entity);
+        return renderRerLineDetail(line, dest, dep, lineCount, config, images, second_entity);
       })}
     </div>
   `;
@@ -127,7 +127,7 @@ function renderRerLineBlock(line, dest, config, imagesUrl, second_entity) {
 /* -------------------------------------------------------------
    LINE TITLE (logo + pastille ligne + destination)
 ------------------------------------------------------------- */
-function renderRerLineTitle(line, destinationName, config, imagesUrl) {
+function renderRerLineTitle(line, destinationName, config, images) {
   const mode = line.id.includes("-")
     ? line.id.substring(0, line.id.indexOf("-"))
     : line.type || "rer";
@@ -137,12 +137,12 @@ function renderRerLineTitle(line, destinationName, config, imagesUrl) {
          style="border-color:#${(line.colourweb_hexa || "").toUpperCase()}">
 
       <div class="rer-line-title-logo">
-        <img src="${imagesUrl}${mode}${mode.includes("bus") ? "" : "sq"}${config.wall_panel ? "_white" : ""}.png"
+        <img src="${images[`${mode}${mode.includes("bus") ? "" : "sq"}${config.wall_panel ? "_white" : ""}.png`]}"
              class="rer-line-type-image">
       </div>
        <div class="rer-line-title-image">
           ${line.icon ?
-              html`<img src = "${imagesUrl}${line.transportmode}/${line.icon}" alt = "${line.shortname_line}" class="${line.type}-image" />`
+              html`<img src = "${images[`${line.transportmode}/${line.icon}`]}" alt = "${line.shortname_line}" class="${line.type}-image" />`
                  : html`<div class="bus-line-image-no-ratp" style="color: #${line.textcolorweb_hexa};background-color:#${line.colorweb_hexa}">${line.shortname_line}</div>`
               }
         </div>
@@ -155,7 +155,7 @@ function renderRerLineTitle(line, destinationName, config, imagesUrl) {
 /* -------------------------------------------------------------
    LINE DETAIL (one departure)
 ------------------------------------------------------------- */
-function renderRerLineDetail(line, dest, dep, lineCount, config, imagesUrl, second_entity) {
+function renderRerLineDetail(line, dest, dep, lineCount, config, images, second_entity) {
   const nextDeparture = dep.minutes;
   const nextDepartureHour = dep.hour;
   const platform = dep.platform || "";
@@ -176,7 +176,7 @@ function renderRerLineDetail(line, dest, dep, lineCount, config, imagesUrl, seco
       </div>
 
       <div class="rer-line-destination">
-        ${formatDestinationLabel(destinationName, imagesUrl, config)}
+        ${formatDestinationLabel(destinationName, images, config)}
       </div>
 
       <div class="rer-line-departure">
@@ -349,12 +349,13 @@ function renderRerDepartureOld(nextDeparture, nextDepartureHour, nextArrival, li
 /* -------------------------------------------------------------
    DESTINATION LABEL
 ------------------------------------------------------------- */
-function formatDestinationLabel(name, imagesUrl, config) {
+function formatDestinationLabel(name, images, config) {
+  const wallSuffix = config.wall_panel ? "_white" : "";
   if (name.startsWith("Gare d")) {
     return html`
       <div class="destination-name"><span class="destination-scroll">${name.substring(7).trim()}</span></div>
       <div class="destination-img">
-        <img src="${imagesUrl}train${config.wall_panel ? "_white" : ""}.png"
+        <img src="${images[`train${wallSuffix}.png`]}"
              class="destination-image">
       </div>
     `;
@@ -364,7 +365,7 @@ function formatDestinationLabel(name, imagesUrl, config) {
     return html`
       <div class="destination-name"><span class="destination-scroll">${name}</span></div>
       <div class="destination-img">
-        <img src="${imagesUrl}mickey${config.wall_panel ? "_white" : ""}.png"
+        <img src="${images[`mickey${wallSuffix}.png`]}"
              class="destination-image">
       </div>
     `;
@@ -374,7 +375,7 @@ function formatDestinationLabel(name, imagesUrl, config) {
     return html`
       <div class="destination-name"><span class="destination-scroll">${name}</span></div>
       <div class="destination-img">
-        <img src="${imagesUrl}tgv${config.wall_panel ? "_white" : ""}.png"
+        <img src="${images[`tgv${wallSuffix}.png`]}"
              class="destination-image">
       </div>
     `;

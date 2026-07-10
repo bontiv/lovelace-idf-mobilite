@@ -1,17 +1,17 @@
 // render-bus.js
 import { html } from "lit";
 
-export function renderBUS(model, config, imagesUrl, secondEntity = false) {
+export function renderBUS(model, config, images, secondEntity = false) {
   return html`
-    ${renderBusHeader(model, config, imagesUrl, secondEntity)}
-    ${renderBusLines(model, config, imagesUrl, secondEntity)}
+    ${renderBusHeader(model, config, images, secondEntity)}
+    ${renderBusLines(model, config, images, secondEntity)}
   `;
 }
 
 /* -------------------------------------------------------------
    HEADER
 ------------------------------------------------------------- */
-function renderBusHeader(model, config, imagesUrl, secondEntity) {
+function renderBusHeader(model, config, images, secondEntity) {
   if (config.show_station_name === false) return html``;
 
   const station = formatStationName(model.station);
@@ -24,7 +24,7 @@ function renderBusHeader(model, config, imagesUrl, secondEntity) {
         ${station.label}
         ${station.icons.map(icon => html`
           <div class="destination-img">
-            <img src="${imagesUrl}${icon}${config.wall_panel ? "_white" : ""}.png"
+          <img src="${images[`${icon}${config.wall_panel ? "_white" : ""}.png`]}"
                  class="destination-image">
           </div>
         `)}
@@ -51,7 +51,7 @@ function headerClass(config) {
 /* -------------------------------------------------------------
    LINES
 ------------------------------------------------------------- */
-function renderBusLines(model, config, imagesUrl, secondEntity) {
+function renderBusLines(model, config, images, secondEntity) {
   if (!model.lines.length) {
     return html`
       <div class="bus-lines">
@@ -59,7 +59,7 @@ function renderBusLines(model, config, imagesUrl, secondEntity) {
           <div class="bus-line-detail">
             <div class="bus-img">
               <div class="bus-line-image">
-                <img src="${imagesUrl}warning.png" class="bus-image">
+              <img src="${images['warning.png']}" class="bus-image">
               </div>
             </div>
             <div class="bus-destination">Arrêt non desservi / Données indisponibles</div>
@@ -71,12 +71,12 @@ function renderBusLines(model, config, imagesUrl, secondEntity) {
 
   return html`
     <div class="bus-lines" style="${config.second_entity && !secondEntity ? "flex-grow:0" : ""}">
-      ${model.lines.map(line => renderBusLine(line, config, imagesUrl))}
+      ${model.lines.map(line => renderBusLine(line, config, images))}
     </div>
   `;
 }
 
-function renderBusLine(line, config, imagesUrl) {
+function renderBusLine(line, config, images) {
   let first_time = false;
 
   return html`
@@ -88,12 +88,12 @@ function renderBusLine(line, config, imagesUrl) {
                 first_time = true &&
                 html`
                 <div class="bus-line-type">
-                    <img src="${imagesUrl}${line.type}${config.wall_panel ? "_white" : ""}.png"
+                    <img src="${images[`${line.type}${config.wall_panel ? "_white" : ""}.png`]}"
                         class="bus-line-type-image">
                 </div>
                 <div class="bus-line-image">
                       ${line.icon ?
-                        html`<img src = "${imagesUrl}${line.transportmode}/${line.icon}" alt = "${line.shortname_line}" class="${line.type}-image" />`
+                        html`<img src = "${images[`${line.transportmode}/${line.icon}`]}" alt = "${line.shortname_line}" class="${line.type}-image" />`
                         : html`<div class="bus-line-image-no-ratp" style="color: #${line.textcolorweb_hexa};background-color:#${line.colorweb_hexa}">${line.shortname_line}</div>`
                       }
                   </div>
@@ -101,7 +101,7 @@ function renderBusLine(line, config, imagesUrl) {
           </div>
           <div class="bus-destination">
             ${config.show_train_ref ? html`${dest.departures[0].destinationRef != "BusEstimeDans" || !dest.departures[1] ? dest.departures[0].destinationRef : dest.departures[1].destinationRef}&nbsp;-&nbsp;` : ""}
-            <div class="destination-name">${formatDestinationLabel(dest.name, imagesUrl, config)}</div>
+            <div class="destination-name">${formatDestinationLabel(dest.name, images, config)}</div>
           </div>
           ${renderBusDeparture(dest.departures[0], config)}
           ${renderBusDeparture(dest.departures[1], config)}
@@ -168,7 +168,7 @@ function formatStationName(name) {
 /* -------------------------------------------------------------
    DESTINATION LABEL PARSER
 ------------------------------------------------------------- */
-function formatDestinationLabel(raw, imagesUrl, config) {
+function formatDestinationLabel(raw, images, config) {
     // On travaille sur la chaîne brute (avec éventuels tags)
     const name = raw || "";
     const wallSuffix = config.wall_panel ? "_white" : "";
@@ -188,7 +188,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
     return html`
         <div class="destination-name"><span class="destination-scroll">${label}</span></div>
         <div class="destination-img">
-            <img src="${imagesUrl}rer${wallSuffix}.png"
+            <img src="${images[`rer${wallSuffix}.png`]}"
                  class="destination-image">
         </div>
         ${after
@@ -204,7 +204,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
         return html`
             <div class="destination-name"><span class="destination-scroll">${label}</span></div>
             <div class="destination-img">
-                <img src="${imagesUrl}rer${wallSuffix}.png"
+                <img src="${images[`rer${wallSuffix}.png`]}"
                     class="destination-image">
             </div>
             `;
@@ -225,7 +225,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
         return html`
             <div class="destination-name"><span class="destination-scroll">${label}</span></div>
             <div class="destination-img">
-                <img src="${imagesUrl}metro${wallSuffix}.png"
+                <img src="${images[`metro${wallSuffix}.png`]}"
                     class="destination-image">
             </div>
             ${after
@@ -241,7 +241,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
         return html`
             <div class="destination-name"><span class="destination-scroll">${label}</span></div>
             <div class="destination-img">
-                <img src="${imagesUrl}metro${wallSuffix}.png"
+                <img src="${images[`metro${wallSuffix}.png`]}"
                     class="destination-image">
             </div>
     `;
@@ -262,7 +262,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
         return html`
             <div class="destination-name"><span class="destination-scroll">${label}</span></div>
             <div class="destination-img">
-                <img src="${imagesUrl}tram${wallSuffix}.png"
+                <img src="${images[`tram${wallSuffix}.png`]}"
                     class="destination-image">
             </div>
             ${after
@@ -286,7 +286,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
         return html`
             <div class="destination-name"><span class="destination-scroll">${label}</span></div>
             <div class="destination-img">
-                <img src="${imagesUrl}tgv${wallSuffix}.png"
+                <img src="${images[`tgv${wallSuffix}.png`]}"
                     class="destination-image">
             </div>
             ${after
@@ -300,7 +300,7 @@ function formatDestinationLabel(raw, imagesUrl, config) {
         return html`
             <div class="destination-name"><span class="destination-scroll">${name}</span></div>
             <div class="destination-img">
-                <img src="${imagesUrl}train${wallSuffix}.png"
+                <img src="${images[`train${wallSuffix}.png`]}"
                     class="destination-image">
             </div>
         `;

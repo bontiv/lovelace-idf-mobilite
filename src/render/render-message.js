@@ -1,6 +1,6 @@
 import { idfMobiliteLineRef } from "../referentiel-des-lignes-filtered.js";
 
-export function renderMessages(model, config, imagesUrl, noScroll = false) {
+export function renderMessages(model, config, images, noScroll = false) {
   if (!model || !model.lines || model.lines.length === 0) return "";
 
   const collected = {
@@ -34,7 +34,7 @@ export function renderMessages(model, config, imagesUrl, noScroll = false) {
           id: lineBlock.line.id,
           name: lineBlock.line.name
         },
-        imagesUrl
+        images
       );
     }
   }
@@ -62,7 +62,7 @@ export function renderMessages(model, config, imagesUrl, noScroll = false) {
             id: station.id,
             name: station.name
           },
-          imagesUrl
+          images
         );
       }
     }
@@ -179,7 +179,7 @@ function getSeverityBadge(severity, type) {
   }
 }
 
-function pushMessage(collected, msg, context, imagesUrl) {
+function pushMessage(collected, msg, context, images) {
   const baseText = msg.cleanedText;
   const normalized = msg.normalized;
 
@@ -218,7 +218,7 @@ function pushMessage(collected, msg, context, imagesUrl) {
 
     if (lineData) {
        if (lineData.icon)
-         prefixHtml = `<img class="message-line-icon" src = "${imagesUrl}${lineData.transportmode}/${lineData.icon}" alt = "${lineData.shortname_line}" class="${lineData.type}-image" />`
+         prefixHtml = `<img class="message-line-icon" src = "${images[`${lineData.transportmode}/${lineData.icon}`]}" alt = "${lineData.shortname_line}" class="${lineData.type}-image" />`
        else
           prefixHtml = `<div class="message-line-pill" style="color: #${lineData.textcolourweb_hexa};background-color:#${lineData.colourweb_hexa}">${lineData.shortname_line}</div>`
     } else {

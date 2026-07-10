@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- `src/idf-mobilite.js`: les images sont désormais chargées directement depuis l'URL raw GitHub (`https://raw.githubusercontent.com/bontiv/lovelace-idf-mobilite/main/src/images/`) au lieu d'utiliser une URL locale relative au module JS compilé (`new URL('images/', import.meta.url)`). Cela supprime la dépendance aux images embarquées dans le zip de release.
+- Images bundled via Rollup (`@rollup/plugin-url`): all PNG and SVG images are now base64-encoded and embedded directly into the `dist/idf-mobilite.js` bundle. Raw GitHub URLs (`raw.githubusercontent.com`) have been removed. A new `src/images/index.js` module centralises all image imports and exports an `images` object used by the renderers (`render-bus.js`, `render-rer.js`, `render-message.js`). The `rollup-plugin-copy-assets` plugin has been replaced by `@rollup/plugin-url`.
+- `dist/` added to `.gitignore` and removed from git tracking: the build folder is no longer versioned; it is generated on the fly by the CI during releases.
+- `.github/workflows/release.yml`: the zip packaging step has been removed (no longer needed since images are embedded in `idf-mobilite.js`); the release now publishes `dist/idf-mobilite.js` directly as an asset.
+
+### Added
+- `src/images/trainsq.png` and `src/images/trainsq_white.png` added and referenced in `src/images/index.js`.
 
 ## [1.2.0] - 2026-07-08
 
