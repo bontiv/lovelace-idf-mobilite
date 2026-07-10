@@ -13,16 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `parser-messages.js`: `updated_at` and `published_at` (from `application_periods[0].begin`) fields of Navitia disruptions are now propagated into every parsed message object.
 - `render-message.js`: messages within each category (`Perturbation`, `Information`, `Commercial`) are now sorted by descending date (`updated_at` first, then `published_at`), so the most recently published messages appear first.
-
-## [1.2.3] - 2026-07-08
-
-### Changed
 - Images bundled via Rollup (`@rollup/plugin-url`): all PNG and SVG images are now base64-encoded and embedded directly into the `dist/idf-mobilite.js` bundle. Raw GitHub URLs (`raw.githubusercontent.com`) have been removed. A new `src/images/index.js` module centralises all image imports and exports an `images` object used by the renderers (`render-bus.js`, `render-rer.js`, `render-message.js`). The `rollup-plugin-copy-assets` plugin has been replaced by `@rollup/plugin-url`.
 - `dist/` added to `.gitignore` and removed from git tracking: the build folder is no longer versioned; it is generated on the fly by the CI during releases.
 - `.github/workflows/release.yml`: the zip packaging step has been removed (no longer needed since images are embedded in `idf-mobilite.js`); the release now publishes `dist/idf-mobilite.js` directly as an asset.
 
 ### Added
 - `src/images/trainsq.png` and `src/images/trainsq_white.png` added and referenced in `src/images/index.js`.
+
+## [1.2.3] - 2026-07-08
+
+
 
 ## [1.2.0] - 2026-07-08
 
