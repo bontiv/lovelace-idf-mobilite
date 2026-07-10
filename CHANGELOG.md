@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.github/workflows/release.yml`: the zip packaging step has been removed (no longer needed since images are embedded in `idf-mobilite.js`); the release now publishes `dist/idf-mobilite.js` directly as an asset.
 
 ### Added
+- `rollup.config.js`: added `@rollup/plugin-replace` to automatically inject the version from `package.json` into the bundle at build time. The hardcoded version string in `src/idf-mobilite.js` has been replaced by the `__VERSION__` token, ensuring the console banner always displays the correct version without any manual update.
+
 - `src/images/trainsq.png` and `src/images/trainsq_white.png` added and referenced in `src/images/index.js`.
 
 ## [1.2.3] - 2026-07-08
