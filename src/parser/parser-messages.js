@@ -66,7 +66,9 @@ function parseSingleLineNavitia(data) {
           line_name: line.name,
           text,
           severity: disruption.severity?.effect || null,
-          cause: disruption.cause || report.cause || null
+          cause: disruption.cause || report.cause || null,
+          updated_at: disruption.updated_at || null,
+          published_at: disruption.application_periods?.[0]?.begin || null
         });
       }
     }
@@ -111,7 +113,9 @@ function parseSingleLineNavitia(data) {
           station_name: name,
           text,
           severity: disruption.severity?.effect || null,
-          cause: disruption.cause || report.cause || null
+          cause: disruption.cause || report.cause || null,
+          updated_at: disruption.updated_at || null,
+          published_at: disruption.application_periods?.[0]?.begin || null
         });
       }
     }
@@ -148,7 +152,9 @@ function parseSingleLineNavitia(data) {
           station_name: pt.name,
           text,
           severity: disruption.severity?.effect || null,
-          cause: disruption.cause || null
+          cause: disruption.cause || null,
+          updated_at: disruption.updated_at || null,
+          published_at: disruption.application_periods?.[0]?.begin || null
         });
       }
     }
@@ -175,7 +181,9 @@ function parseSingleLineNavitia(data) {
             line_name: lineObj.name,
             text,
             severity: disruption.severity?.effect || null,
-            cause: disruption.cause || null
+            cause: disruption.cause || null,
+            updated_at: disruption.updated_at || null,
+            published_at: disruption.application_periods?.[0]?.begin || null
           });
         }
       }

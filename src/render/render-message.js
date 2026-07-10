@@ -69,14 +69,21 @@ export function renderMessages(model, config, images, noScroll = false) {
   }
 
   // ------------------------------------------------------------
-  // 3) FILTRAGE SELON CONFIG (NOUVEAU)
+  // 3) TRI par date décroissante dans chaque catégorie
   // ------------------------------------------------------------
-  const filteredPerturbations = filterMessagesByConfig(collected.Perturbation, config);
-  const filteredInformation = filterMessagesByConfig(collected.Information, config);
-  const filteredCommercial = filterMessagesByConfig(collected.Commercial, config);
+  const sortedPerturbations = sortByDateDesc(collected.Perturbation);
+  const sortedInformation = sortByDateDesc(collected.Information);
+  const sortedCommercial = sortByDateDesc(collected.Commercial);
 
   // ------------------------------------------------------------
-  // 4) Construction HTML final
+  // 4) FILTRAGE SELON CONFIG
+  // ------------------------------------------------------------
+  const filteredPerturbations = filterMessagesByConfig(sortedPerturbations, config);
+  const filteredInformation = filterMessagesByConfig(sortedInformation, config);
+  const filteredCommercial = filterMessagesByConfig(sortedCommercial, config);
+
+  // ------------------------------------------------------------
+  // 5) Construction HTML final
   // ------------------------------------------------------------
 
   // On concatène dans l'ordre : Perturbation → Information → Commercial
@@ -101,7 +108,31 @@ export function renderMessages(model, config, images, noScroll = false) {
 }
 
 // ------------------------------------------------------------
-// FILTRE SELON CONFIG (NOUVEAU)
+// Tri par date de publication décroissante (plus récent en premier)
+// ------------------------------------------------------------
+function parseNavitiaDate(dateStr) {
+  if (!dateStr) return 0;
+  // Format Navitia : "YYYYMMDDTHHmmss" → "YYYY-MM-DDTHH:mm:ss"
+  const s = String(dateStr);
+  if (s.length >= 15) {
+    const iso = `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}T${s.slice(9, 11)}:${s.slice(11, 13)}:${s.slice(13, 15)}`;
+    const ts = Date.parse(iso);
+    return isNaN(ts) ? 0 : ts;
+  }
+  const ts = Date.parse(s);
+  return isNaN(ts) ? 0 : ts;
+}
+
+function sortByDateDesc(messages) {
+  return [...messages].sort((a, b) => {
+    const da = parseNavitiaDate(a.updated_at || a.published_at);
+    const db = parseNavitiaDate(b.updated_at || b.published_at);
+    return db - da;
+  });
+}
+
+// ------------------------------------------------------------
+// FILTRE SELON CONFIG
 // ------------------------------------------------------------
 function filterMessagesByConfig(messages, config) {
   return messages.filter(m => {
@@ -186,7 +217,9 @@ function pushMessage(collected, msg, context, images) {
   const targetArray =
     msg.type === "information"
       ? collected.Information
-      : collected.Perturbation;
+      : (msg.severity === "NO_SERVICE" || msg.severity === "SIGNIFICANT_DELAYS")
+        ? collected.Perturbation
+        : collected.Commercial;
 
   if (targetArray.some(e => e.normalized === normalized)) {
     return;
@@ -247,7 +280,9 @@ function pushMessage(collected, msg, context, images) {
     text,
     normalized,
     type: msg.type,
-    severity: msg.severity
+    severity: msg.severity,
+    updated_at: msg.updated_at || null,
+    published_at: msg.published_at || null
   });
 }
 

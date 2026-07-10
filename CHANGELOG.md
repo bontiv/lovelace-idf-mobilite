@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- `render-message.js`: messages with severity other than `NO_SERVICE` or `SIGNIFICANT_DELAYS` are now correctly routed to the `Commercial` category instead of `Perturbation`.
+
+### Changed
+- `parser-messages.js`: `updated_at` and `published_at` (from `application_periods[0].begin`) fields of Navitia disruptions are now propagated into every parsed message object.
+- `render-message.js`: messages within each category (`Perturbation`, `Information`, `Commercial`) are now sorted by descending date (`updated_at` first, then `published_at`), so the most recently published messages appear first.
+
 ## [1.2.3] - 2026-07-08
 
 ### Changed
