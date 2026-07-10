@@ -1,6 +1,6 @@
 {
   "name": "lovelace-idf-mobilite",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "Card to show upcoming trains or buses on the parisian transport network",
   "keywords": [
     "Paris",
